@@ -10,7 +10,7 @@ parser.add_argument('-o' , help = 'output image directory + prefix', default = '
 args = parser.parse_args()
 vid = cv2.VideoCapture(args.viddir)
 
-inpath = args.viddir.split('.')[0]
+inpath = args.viddir.split('/')[-1].split('.')[0]
 outpath = args.o.split('/')[0]
 
 if not os.path.exists(inpath):
@@ -20,7 +20,6 @@ os.system('rm -rf {}/{}'.format(inpath,outpath))
 os.mkdir('{}/{}'.format(inpath,outpath))
 
 cnt = 1
-
 while(True):
     ret, img = vid.read()
     if ret:
