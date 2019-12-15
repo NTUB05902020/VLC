@@ -25,7 +25,7 @@ while(True):
     ret, img = vid.read()
     if ret:
         gray_frame = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        cv2.imwrite('{}{:03d}{}'.format(args.o,cnt,args.to), gray_frame)
+        cv2.imwrite('{}/{}{:03d}{}'.format(inpath,args.o,cnt,args.to), gray_frame)
         cnt += 1
     else:
         break
