@@ -7,7 +7,7 @@ os.system('rm -fr cutt')
 os.mkdir('cutt')
 
 
-freqs = [800, 1600, 3200]
+freqs = [800, 1600, 3200] # change to argv
 for freq in freqs:
     print(freq)
     os.mkdir('cutt/{}'.format(freq))

@@ -28,7 +28,7 @@ except IndexError:
     print('Format: {} [video_dir]'.format(sys.argv[0]))
     sys.exit(1)
 
-pics = sorted(os.listdir(video_dir))
+pics = sorted(os.listdir(video_dir)) # glob
 total_bits = 12
 total_frames = 6 + 4*total_bits + 2*total_bits
 bit_string, symbol_string = [], []
