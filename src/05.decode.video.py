@@ -35,15 +35,13 @@ if __name__ == '__main__':
         print('Format: {} [frame_dir]'.format(sys.argv[0]))
         sys.exit(1)
 
-    pics = os.listdir(frame_dir)
-    imgtype = pics[0].split('.')[-1]
-
-    total_frames = nof_prem + (nof_data+nof_splt) * total_bits
+    pics = sorted(os.listdir(frame_dir))
     
+    total_frames = nof_prem + (nof_data+nof_splt) * total_bits
     bit_string, symbol_string = [], []
 
-    for i in range(total_frames):
-        gray_frame = cv2.imread('{}/{}.{}'.format(frame_dir,i,imgtype), cv2.IMREAD_GRAYSCALE)
+    for i,pic in enumerate(pics[:total_frames]):
+        gray_frame = cv2.imread(os.path.join(frame_dir,pic), cv2.IMREAD_GRAYSCALE)
         cutted = naiiveCut(gray_frame)
         sig = extract1DSignal(cutted)
         
