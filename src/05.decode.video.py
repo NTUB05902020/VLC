@@ -8,7 +8,6 @@ nof_prem = 6
 nof_data = 4
 nof_splt = 2
 
-total_frames = 6 + 4*total_bits + 2*total_bits
 rand_3200_ratio = 0.8
 rand_weights = [1-rand_3200_ratio, rand_3200_ratio]
 
@@ -52,7 +51,7 @@ if __name__ == '__main__':
         bit_string.append(bit)
         
         if i>=nof_prem and (i-nof_prem)%(nof_data+nof_splt) == nof_data:
-            nums = [0, 0, 0]  #[monenum, zeronum, onenum]
+            nums = [0, 0, 0]  #[num_-1, num_0, num_1]
             for j in range(i-nof_data, i): nums[bit_string[j]+1] += 1
             if nums[0] > nums[2]: symbol_string.append(-1)
             elif nums[0] < nums[2]: symbol_string.append(1)
