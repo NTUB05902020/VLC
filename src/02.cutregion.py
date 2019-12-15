@@ -1,13 +1,41 @@
-import cv2, os
+import cv2, os, glob, argparse
 import numpy as np
 from util import naiiveCut
 
+parser = argparse.ArgumentParser()
 
-os.system('rm -fr cutt')
-os.mkdir('cutt')
+parser.add_argument('imgdir',help='image file path')
+parser.add_argument('-o' ,help = 'output image directory + name',default = 'cut/img')
+parser.add_argument('-to', help = 'output image format (.jpg or .bmp)', default = '.jpg')
+
+args = parser.parse_args()
+imgpath = args.imgdir
+
+# File I/O:
+images = glob.glob(imgpath+'*')
+outpath = args.o.split('/')[0]
+
+if os.path.exists(outpath):
+    os.system('rm -f {}/*'.format(outpath))
+else:
+    os.mkdir(outpath)
 
 
-freqs = [800, 1600, 3200] # change to argv
+nof = len(images)
+
+for fname in images:
+    
+    img = cv2.imread(fname, cv2.IMREAD_GRAYSCALE)
+
+    cutimg = naiiveCut(img)
+
+    cv2.imwrite('{}{:03d}{}'.format(args.o,cnt,args.to), cut_img)
+
+
+
+
+
+
 for freq in freqs:
     print(freq)
     os.mkdir('cutt/{}'.format(freq))

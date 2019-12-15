@@ -5,18 +5,19 @@ import numpy as np
 parser = argparse.ArgumentParser()
 parser.add_argument('viddir', help='video file path')
 parser.add_argument('-to', help = 'output image format (.jpg or .bmp)', default = '.jpg')
-parser.add_argument('-o' , help = 'output image directory + prefix', default = 'frames/img')
+parser.add_argument('-o' , help = 'output image directory + prefix', default = 'frame/img')
 
 args = parser.parse_args()
 vid = cv2.VideoCapture(args.viddir)
 
-
+inpath = args.viddir.split('.')[0]
 outpath = args.o.split('/')[0]
 
-if os.path.exists(outpath):
-    os.system('rm -f {}/*'.format(outpath))
-else:
-    os.mkdir(outpath)
+if not os.path.exists(inpath):
+    os.mkdir(inpath)
+
+os.system('rm -rf {}/{}'.format(inpath,outpath))
+os.mkdir('{}/{}'.format(inpath,outpath))
 
 cnt = 1
 
