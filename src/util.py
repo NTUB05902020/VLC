@@ -15,25 +15,26 @@ def naiiveCut(img):
     out = out[out.shape[0]//4:out.shape[0]*3//4,:]
     return out.astype(np.uint8)
 
-def cutRegion(img, ratio1=1.61, ratio2=3.78, ratioy=5.87):
+def cutRegion(img, ratiox=1.2, ratioy=1.2):
     gammaed = np.array(255*(img/255)**2, dtype='uint8')
-    _, thresh = cv2.threshold(gammaed.astype(np.uint8), 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+    _, binarized = cv2.threshold(gammaed.astype(np.uint8), 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
     
-    contours, _ = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE) 
+    contours, _ = cv2.findContours(binarized, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE) 
     contours.sort(key=cv2.contourArea)
     
     (x,y), radius = cv2.minEnclosingCircle(contours[-1])
-    reg_left, reg_right, dy = float2int(x-ratio2*radius), float2int(x-ratio1*radius), ratioy*radius
-    reg_up, reg_down = float2int(y-dy), float2int(y+dy)
+    reg_left, reg_right, dy = float2int(x - ratiox*radius), float2int(x + ratiox*radius), ratioy * radius
+    reg_up, reg_down = float2int(y - dy), float2int(y + dy)
     
-    clipped = img[reg_up:reg_down,reg_left:reg_right]
-    logged = np.log1p(clipped)
-    m, M = np.min(logged), np.max(logged)
-    out = (logged-m)*255/M
-    return out.astype(np.uint8), reg_left, reg_right, reg_up, reg_down, float2int(x), radius
+    clipped = binarized[reg_up:reg_down,reg_left:reg_right]
+    return clipped
+    #logged = np.log1p(clipped)
+    #m, M = np.min(logged), np.max(logged)
+    #out = (logged-m)*255/M
+    #return out.astype(np.uint8), reg_left, reg_right, reg_up, reg_down, float2int(x), radius
 
 def extract1DSignal(img):
-    return np.convolve(img[:,img.shape[1]//5*2], gaussFilter, 'same')
+    return np.convolve(img[:,img.shape[1]//2], gaussFilter, 'same')
 
 def geoAltitude(signal, stride, slope):
     th, index_sta, siglen = stride*slope, 0, len(signal)
