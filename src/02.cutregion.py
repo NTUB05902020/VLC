@@ -19,11 +19,13 @@ outpath = os.path.join(*outpath[:-1], args.o)
 os.system('rm -rf {}'.format(outpath))
 os.mkdir(outpath)
 
+signals = np.empty((0,1), dtype=np.uint8)
 for i,fname in enumerate(images):
     img = cv2.imread(fname, cv2.IMREAD_GRAYSCALE)
     cutimg = cutRegion(img)
     cv2.imwrite(os.path.join(outpath,fname.split('/')[-1]), cutimg)
-    if i == 0:
-        sig = extract1DSignal(cutimg)
-        plt.plot(sig, '.')
-        plt.savefig('hello.png',)
+    sig = extract1DSignal(cutimg)
+    signals = np.append(signals, sig)
+
+plt.plot(signals, '.')
+plt.savefig('hello.png',)
