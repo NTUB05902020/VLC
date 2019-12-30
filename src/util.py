@@ -41,9 +41,10 @@ def getWidths(signal):
 
 def judgeBit(signal):
     widths = getWidths(signal)
-    res = np.median(widths)
-    if res > 20: return 0, res
-    elif res > 10: return -1, res
-    else: return 1, res
-    #elif res > 3.5: return 2, res
-    #else: return 3, res
+    counts = np.zeros(3, dtype=np.uint32)
+    for width in widths:
+        if width > 20: counts[0] += 1
+        elif width > 10: counts[1] += 1
+        else: counts[2] += 1
+    bits = [0, -1, 1]
+    return bits[np.argmax(counts)]
